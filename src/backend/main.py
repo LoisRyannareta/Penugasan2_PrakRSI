@@ -1,6 +1,11 @@
 from fastapi import FastAPI
 from src.backend.database.db import init_db
-from src.backend.routers import user_router, account_router
+from src.backend.routers import (
+    user_router, 
+    account_router,
+    role_router,
+    registration_router
+)
 
 app = FastAPI(title="Acara RSI API")
 
@@ -15,3 +20,5 @@ def root():
 # Register router
 app.include_router(user_router.router)
 app.include_router(account_router.router)
+app.include_router(role_router.router)
+app.include_router(registration_router.router)

@@ -11,7 +11,7 @@ from sqlmodel import SQLModel
 
 # --- BAGIAN KRUSIAL: IMPORT MODEL ---
 # Kita harus mengimport schema agar SQLModel.metadata terisi dengan definisi tabel
-from src.backend.database.schema.schema import Role, Account, User, Event, Registration
+from src.backend.database.schema import Role, Account, User, Event, Registration
 # ------------------------------------
 
 # Objek Config Alembic, yang menyediakan akses ke nilai dalam file .ini.
