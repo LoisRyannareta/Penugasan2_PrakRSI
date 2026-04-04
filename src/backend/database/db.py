@@ -1,22 +1,18 @@
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker, declarative_base
+# db.py
+from sqlmodel import SQLModel, Session, create_engine
 
 DATABASE_URL = "postgresql://mahasiswa-rsi:praktikum-rsi@localhost:5433/acara-rsi"
 
-engine = create_engine(DATABASE_URL)
+# Create engine untuk SQLModel
+engine = create_engine(DATABASE_URL, echo=True)  # echo=True untuk debug query
 
-SessionLocal = sessionmaker(
-    autocommit=False,
-    autoflush=False,
-    bind=engine
-)
-
-Base = declarative_base()
-
-# ini yang dipakai di router
+# Dependency session untuk router/service
 def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
+    with Session(engine) as session:  # pakai sqlmodel.Session
+        yield session
+
+# Fungsi buat bikin semua tabel (dipanggil sekali)
+def init_db():
+    from src.backend.database.schema import User
+    # dari sini nanti bisa ditambah model lain misal Role, Account, dll
+    SQLModel.metadata.create_all(engine)

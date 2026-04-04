@@ -7,8 +7,9 @@ class UserCreate(BaseModel):
     whatsapp: str
 
 class UserUpdate(BaseModel):
-    name: Optional[str] = None
-    email: Optional[str] = None
+    first_name: Optional[str] = None
+    last_name: Optional[str] = None
+    whatsapp: Optional[str] = None
 
 class UserResponse(BaseModel):
     id: int

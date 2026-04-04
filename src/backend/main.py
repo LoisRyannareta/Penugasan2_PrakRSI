@@ -1,12 +1,11 @@
 from fastapi import FastAPI
-from src.backend.database.db import Base, engine
+from src.backend.database.db import init_db
 from src.backend.routers import user_router, account_router
 
-Base.metadata.create_all(bind=engine)
-app = FastAPI(
-    title="Backend RSI API",
-    version="1.0.0"
-)
+app = FastAPI(title="Acara RSI API")
+
+# Init DB tables
+init_db()
 
 # Root (biar tahu API hidup)
 @app.get("/")
