@@ -1,0 +1,38 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres:18-alpine
+    container_name: database
+    restart: always
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: mahasiswa-rsi
+      POSTGRES_PASSWORD: praktikum-rsi
+      POSTGRES_DB: acara-rsi
+    networks:
+      - rsinet
+
+  pgadmin:
+    image: dpage/pgadmin4:9.10.0
+    container_name: pgadmin
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@gmail.com
+      PGADMIN_DEFAULT_PASSWORD: admin123
+    ports:
+      - "5434:80"
+    depends_on:
+      - postgres
+    networks:
+      - rsinet
+
+volumes:
+  postgres_data:
+
+networks:
+  rsinet:
+    driver: bridge
