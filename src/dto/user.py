@@ -19,3 +19,7 @@ class UserResponse(BaseModel):
 
     class Config:
         from_attributes = True
+
+class UserPatch(BaseModel):
+    name: Optional[str] = None
+    email: Optional[str] = None

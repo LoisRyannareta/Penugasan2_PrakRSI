@@ -40,3 +40,20 @@ def delete_account_service(db: Session, account_id: int):
     if not account:
         raise HTTPException(status_code=404, detail="Account not found")
     delete_account(db, account)
+
+def patch_account_service(db: Session, account_id: int, data):
+    account = get_account_by_id(db, account_id)
+
+    if not account:
+        raise HTTPException(404, "Account not found")
+
+    update_data = data.model_dump(exclude_unset=True)
+
+    for key, value in update_data.items():
+        setattr(account, key, value)
+
+    db.add(account)
+    db.commit()
+    db.refresh(account)
+
+    return account

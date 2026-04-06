@@ -1,6 +1,6 @@
 from datetime import datetime
 from pydantic import field_validator, ValidationInfo, BaseModel
-
+from typing import Optional
 
 class EventCreate(BaseModel):
     name: str
@@ -33,3 +33,10 @@ class EventResponse(BaseModel):
 
     class Config:
         from_attributes = True
+
+class EventPatch(BaseModel):
+    name: Optional[str] = None
+    description: Optional[str] = None
+    quota: Optional[int] = None
+    started_at: Optional[datetime] = None
+    ended_at: Optional[datetime] = None

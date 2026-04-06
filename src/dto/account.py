@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+from typing import Optional
 
 class AccountCreate(BaseModel):
     user_id: int
@@ -16,3 +17,7 @@ class AccountResponse(BaseModel):
 
     class Config:
         from_attributes = True
+
+class AccountPatch(BaseModel):
+    username: Optional[str] = None
+    password: Optional[str] = None

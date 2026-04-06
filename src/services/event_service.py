@@ -1,7 +1,8 @@
-from sqlmodel import Session
+from sqlmodel import Session, select
 from src.repositories.event_repository import EventRepository
 from src.database.schema import Event
 from datetime import datetime
+from fastapi import HTTPException
 
 
 class EventService:
@@ -25,8 +26,9 @@ class EventService:
 
     def update_event(self, db: Session, event_id: int, data):
         event = self.repo.get_by_id(db, event_id)
+
         if not event:
-            return None
+            raise HTTPException(404, "Event not found")
 
         event.name = data.name
         event.description = data.description
@@ -39,8 +41,37 @@ class EventService:
 
     def delete_event(self, db: Session, event_id: int):
         event = self.repo.get_by_id(db, event_id)
+
         if not event:
-            return None
+            raise HTTPException(404, "Event not found")
 
         self.repo.delete(db, event)
         return event
+
+  
+    def patch_event(self, db: Session, event_id: int, data):
+        event = self.repo.get_by_id(db, event_id)
+
+        if not event:
+            raise HTTPException(404, "Event not found")
+
+        update_data = data.model_dump(exclude_unset=True)
+
+        for key, value in update_data.items():
+            setattr(event, key, value)
+
+        event.updated_at = datetime.now()
+
+        return self.repo.update(db, event)
+
+
+    def search_events(self, db: Session, name=None, location=None):
+        statement = select(Event)
+
+        if name:
+            statement = statement.where(Event.name.contains(name))
+
+        if location:
+            statement = statement.where(Event.location.contains(location))
+
+        return db.exec(statement).all()
