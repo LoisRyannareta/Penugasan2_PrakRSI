@@ -1,0 +1,12 @@
+<<<<<<< HEAD
+__pycache__/
+*.pyc
+=======
+.env
+.vscode
+.venv
+alembic/__pycache__/
+**/__pycache__/
+*.db
+*.log
+>>>>>>> origin/integration-search-patch-validation
