@@ -1,5 +1,5 @@
 from datetime import datetime
-from pydantic import field_validator, ValidationInfo, BaseModel
+from pydantic import field_validator, ValidationInfo, BaseModel, model_validator
 from typing import Optional
 
 class EventCreate(BaseModel):
@@ -21,6 +21,12 @@ class EventCreate(BaseModel):
         if started_at and v <= started_at:
             raise ValueError("ended_at harus lebih besar dari started_at")
         return v
+    
+    @model_validator(mode="after")
+    def validate_time(self):
+        if self.ended_at <= self.started_at:
+            raise ValueError("ended_at harus lebih besar dari started_at")
+        return self
 
 
 class EventResponse(BaseModel):
